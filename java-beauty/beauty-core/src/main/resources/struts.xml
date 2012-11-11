@@ -8,7 +8,7 @@
     <constant name="struts.devMode" value="true"/>
     <constant name="struts.objectFactory" value="spring"/>
 
-    <package name="system" extends="struts-default" namespace="/system">
+    <package name="system" extends="json-default" namespace="/system">
 		<action name="*_*" class="{1}Action" method="{2}">
  			<result name="success">/{1}/success.jsp</result>
 			<result name="input">/{1}/input.jsp</result>
