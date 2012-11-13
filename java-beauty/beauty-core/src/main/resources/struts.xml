@@ -4,21 +4,67 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <constant name="struts.action.extension" value="do,action"/>
-    <constant name="struts.devMode" value="true"/>
-    <constant name="struts.objectFactory" value="spring"/>
+	<constant name="status.i18n.encoding" value="utf-8" />
+	<constant name="struts.custom.i18n.resources" value="i18n/globalMessages" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.objectFactoy.spring.autoWire" value="name" />
+	<constant name="struts.objectFactory.spring.useClassCache" value="true" />
+	<constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true" />
+	<constant name="struts.action.extension" value="action" />
 
-    <package name="system" extends="json-default" namespace="/system">
+	<constant name="struts.freemarker.templatesCache" value="true" />
+	<constant name="struts.freemarker.beanwrapperCache" value="true" />
+
+	<!-- 开发阶段配置 -->
+	<constant name="struts.server.static.browserCache" value="false" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.i18n.reload" value="true" />
+	<constant name="struts.xslt.nocache" value="true" />
+	<constant name="struts.ui.theme" value="simple" />
+
+	<!--导入struts-default.xml文件 -->
+	<include file="struts-default.xml"></include>
+
+	<package name="basics-default" extends="struts-default"
+		abstract="true">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
+		</result-types>
+		<interceptors>
+			<interceptor name="json"
+				class="org.apache.struts2.json.JSONInterceptor" />
+			<interceptor-stack name="baseStack">
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="json" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="baseStack" />
+
+		<global-results>
+			<result name="json" type="json">
+				<param name="root">page</param>
+				<param name="ignoreHierarchy">false</param><!-- 父类与子类一起返回 -->
+				<param name="excludeNullProperties">true</param><!-- 自动过滤空值 -->
+			</result>
+			<result name="error">/500.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+	</package>
+
+	<package name="system" extends="basics-default" namespace="/system">
 		<action name="*_*" class="{1}Action" method="{2}">
- 			<result name="success">/{1}/success.jsp</result>
-			<result name="input">/{1}/input.jsp</result>
-			<result name="error">/{1}/error.jsp</result>
-			<result name="none">/{1}/none.jsp</result>
-			<result name="login">/login/index.jsp</result>
-			<result name="{2}">/{1}/{2}.jsp</result>
-			<result name="forwardJsp">/{1}/${forwardJsp}</result>
+			<result name="success">/WEB-INF/jsp/system/{1}/success.jsp</result>
+			<result name="input">/WEB-INF/jsp/system/{1}/input.jsp</result>
+			<result name="error">/WEB-INF/jsp/system/{1}/error.jsp</result>
+			<result name="none">/WEB-INF/jsp/system/{1}/none.jsp</result>
+			<result name="login">/WEB-INF/jsp/system/login/index.jsp</result>
+			<result name="{2}">/WEB-INF/jsp/system/{1}/{2}.jsp</result>
+			<result name="forwardJsp">/WEB-INF/jsp/system/{1}/${forwardJsp}</result>
 			<result name="json" type="json"></result>
 		</action>
-    </package>
+	</package>
 
 </struts>
