@@ -2,7 +2,6 @@
  * @ProjectName: Java Beauty Framework
  * @Package com.beauty.core.dao
  * @Title: GenericDaoSupport.java
- * @Description: TODO
  * @author TivyH
  * @date 2010-5-20 下午03:41:54
  * @version V1.0   
@@ -112,7 +111,6 @@ public interface GenericDaoSupport<T,PK extends Serializable>
     
     /**
     * Title: getTotalCount 
-    * Description: TODO
     * @param hql HQL查询语句，根据?匹配动态表达式
     * @param values 根据hql语句中?出现的顺序进行替换
     * @return int   返回总记录条数 

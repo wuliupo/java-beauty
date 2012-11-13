@@ -29,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.util.Assert;
 
 import com.beauty.core.dao.GenericDaoSupport;
 import com.beauty.core.web.page.Page;
