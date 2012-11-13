@@ -34,12 +34,11 @@ import org.springframework.util.Assert;
 import com.beauty.core.dao.GenericDaoSupport;
 import com.beauty.core.web.page.Page;
 
-
-/**
- * author: TivyH<br>.
- * date:2010-5-20 下午03:53:09<br>.
- * @version 1.0 <br>.
+ /**
  *
+ * GenericDaoSupportImpl
+ * tivy
+ * 2012-11-13-下午6:46:44
  */
 public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateDaoSupport implements GenericDaoSupport<T, PK>
 {
@@ -71,17 +70,19 @@ public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateD
 			throw re;
 		}
     }
-
-    /* (non-Javadoc)
-     * <p>Title: delete</p>
-     * <p>Description: </p>
-     * @param id
-     * @see com.foryou.framework.dao.GenericDaoSupport#delete(java.io.Serializable)
+    
+     /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#delete(java.io.Serializable)
      */
     public void delete(PK id)
     {
-        Assert.notNull(id);
-        getHibernateTemplate().delete(findByPrimaryKey(id));
+    	try {
+    		getHibernateTemplate().delete(findByPrimaryKey(id));
+    		logger.debug("delete successful");
+		} catch (RuntimeException re) {
+			logger.error("delete entity error",re);
+			throw re;
+		}
     }
 
     /* (non-Javadoc)
@@ -92,7 +93,13 @@ public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateD
      */
     public void deleteAll(Collection<T> entities)
     {
-        getHibernateTemplate().deleteAll(entities);
+    	try {
+    		getHibernateTemplate().deleteAll(entities);
+    		logger.debug("deleteAll successful");
+		} catch (RuntimeException re) {
+			logger.error("deleteAll entity error",re);
+			throw re;
+		}
     }
 
     /* (non-Javadoc)
@@ -104,273 +111,307 @@ public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateD
      */
     public T findByPrimaryKey(PK id)
     {
-      return (T)getHibernateTemplate().get(entityClass, id);
+      try {
+    	  return (T)getHibernateTemplate().get(entityClass, id);
+		} catch (RuntimeException re) {
+			logger.error("findByPrimaryKey error",re);
+			throw re;
+		}
     }
 
+    
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findByExample(java.lang.Object)
+     */
     @SuppressWarnings("rawtypes")
     public List findByExample(T entity)
     {
-        Assert.notNull(entity);
-        return getHibernateTemplate().findByExample(entity);
+        try {
+        	return getHibernateTemplate().findByExample(entity);
+  		} catch (RuntimeException re) {
+  			logger.error("findByExample error",re);
+  			throw re;
+  		}
     }
     
     /* (non-Javadoc)
-     * <p>Title: findPageListByCriteria</p>
-     * <p>Description: </p>
-     * @param hql
-     * @param property
-     * @param firstResult
-     * @param maxResults
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.util.Map, int, int)
-     */   
+     * @see com.beauty.core.dao.GenericDaoSupport#findListByCriteria(java.lang.String, java.util.Map)
+     */
     @Override
     public List<T> findListByCriteria(String hql,Map<String, Object> property)
     {
-        return findPageListByCriteria(hql,property,-1,-1);
+        try {
+        	return findPageListByCriteria(hql,property,-1,-1);
+  		} catch (RuntimeException re) {
+  			logger.error("findListByCriteria error",re);
+  			throw re;
+  		}
     }
     
+    
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findListByCriteria(java.lang.String, java.lang.Object[])
+     */
     @SuppressWarnings("unchecked")
     public List<T> findListByCriteria(String hql,Object[] values)
     {
-        return getHibernateTemplate().find(hql, values);
+        try {
+        	return getHibernateTemplate().find(hql, values);
+  		} catch (RuntimeException re) {
+  			logger.error("findListByCriteria error",re);
+  			throw re;
+  		}
     }
     
+    
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findListByCriteria(java.lang.String, java.lang.Object)
+     */
     @SuppressWarnings("unchecked")
     public List<T> findListByCriteria(String hql,Object value)
     {
-        return getHibernateTemplate().find(hql, value);
+        try {
+        	 return getHibernateTemplate().find(hql, value);
+  		} catch (RuntimeException re) {
+  			logger.error("findListByCriteria error",re);
+  			throw re;
+  		}
     }
     
+    
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findList(java.lang.String)
+     */
     @SuppressWarnings("unchecked")
     public List<T> findList(String hql)
     {
-        return getHibernateTemplate().find(hql);
+        try {
+        	return getHibernateTemplate().find(hql);
+ 		} catch (RuntimeException re) {
+ 			logger.error("findList error",re);
+ 			throw re;
+ 		}
     }
     
     /* (non-Javadoc)
-     * <p>Title: findPageListByCriteria</p>
-     * <p>Description: </p>
-     * @param hql
-     * @param property
-     * @param firstResult
-     * @param maxResults
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.util.Map, int, int)
+     * @see com.beauty.core.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.util.Map, int, int)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public List<T> findPageListByCriteria(final String hql,
            final Map<String, Object> property,final int firstResult,final int maxResults)
     {
-        return getHibernateTemplate().executeFind(new HibernateCallback<List>(){
-            public List doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query = session.createQuery(hql);
-                
-                setParameter(query, property);
-                
-                if(firstResult>=0)
+    	try {
+    		return getHibernateTemplate().executeFind(new HibernateCallback<List>(){
+                public List doInHibernate(Session session)
+                        throws HibernateException, SQLException
                 {
-                    query.setFirstResult(firstResult);
+                    Query query = session.createQuery(hql);
+                    
+                    setParameter(query, property);
+                    
+                    if(firstResult>=0)
+                    {
+                        query.setFirstResult(firstResult);
+                    }
+                    
+                    if(maxResults>=0)
+                    {
+                        query.setMaxResults(maxResults); 
+                    }
+                    return query.list();
                 }
                 
-                if(maxResults>=0)
-                {
-                    query.setMaxResults(maxResults); 
-                }
-                return query.list();
-            }
-            
-        });
+            });
+		} catch (RuntimeException re) {
+			logger.error("findPageListByCriteria error",re);
+ 			throw re;
+		}
     }
 
+  
+    
     /* (non-Javadoc)
-     * <p>Title: findPageListByCriteria</p>
-     * <p>Description: </p>
-     * @param hql
-     * @param values
-     * @param firstResult
-     * @param maxResults
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.util.Map, int, int)
+     * @see com.beauty.core.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.lang.Object[], int, int)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public List<T> findPageListByCriteria(final String hql, final Object[] values, final int firstResult, final int maxResults)
     {
-        return getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query = session.createQuery(hql);
-                
-                setParameter(query,values);
-                
-                if(firstResult>=0)
+    	try {
+    		return getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(Session session)
+                        throws HibernateException, SQLException
                 {
-                    query.setFirstResult(firstResult);
+                    Query query = session.createQuery(hql);
+                    
+                    setParameter(query,values);
+                    
+                    if(firstResult>=0)
+                    {
+                        query.setFirstResult(firstResult);
+                    }
+                    
+                    if(maxResults>=0)
+                    {
+                    	query.setMaxResults(maxResults); 
+                    }
+                     
+                    return query.list();
                 }
                 
-                if(maxResults>=0)
-                {
-                query.setMaxResults(maxResults); 
-                }
-                 
-                return query.list();
-            }
-            
-        });
+            });
+		} catch (RuntimeException re) {
+			logger.error("findPageListByCriteria error",re);
+ 			throw re;
+		}
     }
     
     /* (non-Javadoc)
-     * <p>Title: findPageListByCriteria</p>
-     * <p>Description: </p>
-     * @param hql
-     * @param value
-     * @param firstResult
-     * @param maxResults
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.util.Map, int, int)
+     * @see com.beauty.core.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.lang.Object, int, int)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public List<T> findPageListByCriteria(final String hql, final Object value, final int firstResult, final int maxResults)
     {
-        return getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query = session.createQuery(hql);
-                
-                query.setParameter(0,value);
-                
-                if(firstResult>=0)
+    	try {
+    		return getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(Session session)
+                        throws HibernateException, SQLException
                 {
-                    query.setFirstResult(firstResult);
+                    Query query = session.createQuery(hql);
+                    
+                    query.setParameter(0,value);
+                    
+                    if(firstResult>=0)
+                    {
+                        query.setFirstResult(firstResult);
+                    }
+                    
+                    if(maxResults>=0)
+                    {
+                    query.setMaxResults(maxResults); 
+                    }
+                     
+                    return query.list();
                 }
                 
-                if(maxResults>=0)
-                {
-                query.setMaxResults(maxResults); 
-                }
-                 
-                return query.list();
-            }
-            
-        });
+            });
+		} catch (RuntimeException re) {
+			logger.error("findPageListByCriteria error",re);
+ 			throw re;
+		}
     }
     
-    /**
-     * 根据参数查询分页信息
-     * @param hql
-     * @param property
-     * @param page
-     * @return List
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.util.Map, com.beauty.core.web.page.Page)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Page findPageListByCriteria(final String hql,final Map<String, Object> property, final Page page)
     {
-        int totalCount = getTotalCount(hql, property);
-        page.setTotalCount(totalCount);
-        
-        List list = getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query = session.createQuery(hql);
-                
-                setParameter(query,property);
-                
-                if(page.getFirstResult()>=0)
+    	try {
+    		int totalCount = getTotalCount(hql, property);
+            page.setTotalCount(totalCount);
+            
+            List list = getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(Session session)
+                        throws HibernateException, SQLException
                 {
-                    query.setFirstResult(page.getFirstResult());
+                    Query query = session.createQuery(hql);
+                    
+                    setParameter(query,property);
+                    
+                    if(page.getFirstResult()>=0)
+                    {
+                        query.setFirstResult(page.getFirstResult());
+                    }
+                    
+                    if(page.getMaxResults()>=0)
+                    {
+                        query.setMaxResults(page.getMaxResults()); 
+                    }
+                    return query.list();
                 }
-                
-                if(page.getMaxResults()>=0)
-                {
-                    query.setMaxResults(page.getMaxResults()); 
-                }
-                return query.list();
-            }
-        });
-        
-        page.setResult(list);
-        return page;
+            });
+            page.setResult(list);
+            return page;
+		} catch (RuntimeException re) {
+			logger.error("findPageListByCriteria error",re);
+ 			throw re;
+		}
     }
     
-    /**
-     * 
-     * Criteria Query include paging
-     * @param hql
-     * @param values
-     * @param page
-     * @return List
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.lang.Object[], com.beauty.core.web.page.Page)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Page findPageListByCriteria(final String hql,final Object[] values, final Page page)
     {
-        int totalCount = getTotalCount(hql, values);
-        page.setTotalCount(totalCount);
-        
-        List list = getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query = session.createQuery(hql);
-                
-                setParameter(query,values);
-                
-                if(page.getFirstResult()>=0)
+    	try {
+    		int totalCount = getTotalCount(hql, values);
+            page.setTotalCount(totalCount);
+            
+            List list = getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(Session session)
+                        throws HibernateException, SQLException
                 {
-                    query.setFirstResult(page.getFirstResult());
+                    Query query = session.createQuery(hql);
+                    
+                    setParameter(query,values);
+                    
+                    if(page.getFirstResult()>=0)
+                    {
+                        query.setFirstResult(page.getFirstResult());
+                    }
+                    
+                    if(page.getMaxResults()>=0)
+                    {
+                        query.setMaxResults(page.getMaxResults()); 
+                    }
+                    return query.list();
                 }
-                
-                if(page.getMaxResults()>=0)
-                {
-                    query.setMaxResults(page.getMaxResults()); 
-                }
-                return query.list();
-            }
-        });
-        page.setResult(list);
-        return page;
+            });
+            page.setResult(list);
+            return page;
+		} catch (RuntimeException re) {
+			logger.error("findPageListByCriteria error", re);
+			throw re;
+		}
     }
     
-    /**
-     * 
-     * Criteria Query include paging
-     * @param hql
-     * @param value
-     * @param page
-     * @return List
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findPageListByCriteria(java.lang.String, java.lang.Object, com.beauty.core.web.page.Page)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Page findPageListByCriteria(final String hql,final Object value, final Page page)
     {
-        int totalCount = getTotalCount(hql, value);
-        page.setTotalCount(totalCount);
-        
-        List list = getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query = session.createQuery(hql);
-                
-                query.setParameter(0,value);
-                
-                if(page.getFirstResult()>=0)
+    	try {
+    		int totalCount = getTotalCount(hql, value);
+            page.setTotalCount(totalCount);
+            
+            List list = getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(Session session)
+                        throws HibernateException, SQLException
                 {
-                    query.setFirstResult(page.getFirstResult());
+                    Query query = session.createQuery(hql);
+                    
+                    query.setParameter(0,value);
+                    
+                    if(page.getFirstResult()>=0)
+                    {
+                        query.setFirstResult(page.getFirstResult());
+                    }
+                    
+                    if(page.getMaxResults()>=0)
+                    {
+                        query.setMaxResults(page.getMaxResults()); 
+                    }
+                    return query.list();
                 }
-                
-                if(page.getMaxResults()>=0)
-                {
-                    query.setMaxResults(page.getMaxResults()); 
-                }
-                return query.list();
-            }
-        });
-        page.setResult(list);
-        return page;
+            });
+            page.setResult(list);
+            return page;
+		} catch (RuntimeException re) {
+			logger.error("findPageListByCriteria error",re);
+			throw re;
+		}
     }
     
     private String generateCountHql(String hql)
@@ -400,366 +441,394 @@ public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateD
     }
     
     /* (non-Javadoc)
-     * <p>Title: getTotalCount</p>
-     * <p>Description: </p>
-     * @param hql
-     * @param map
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#getTotalCount(java.lang.String, java.util.Map)
+     * @see com.beauty.core.dao.GenericDaoSupport#getTotalCount(java.lang.String, java.util.Map)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public int getTotalCount(final String hql, final Map<String, ? extends Object> property)
     {
-        Object count = this.getHibernateTemplate().execute(
-                new HibernateCallback() {
-                    public Object doInHibernate(Session session)
-                            throws HibernateException, SQLException {
-                        
-                        String countHql = generateCountHql(hql);
-                        
-                        Query query = session.createQuery(countHql);
-                        
-                        setParameter(query, property);
-                        
-                        Integer count = ((Long)query.uniqueResult()).intValue();
-                        return count;
-                    }
-                });
-        return ((Integer)count).intValue();
+    	try {
+    		Object count = this.getHibernateTemplate().execute(
+                    new HibernateCallback() {
+                        public Object doInHibernate(Session session)
+                                throws HibernateException, SQLException {
+                            
+                            String countHql = generateCountHql(hql);
+                            
+                            Query query = session.createQuery(countHql);
+                            
+                            setParameter(query, property);
+                            
+                            Integer count = ((Long)query.uniqueResult()).intValue();
+                            return count;
+                        }
+                    });
+            return ((Integer)count).intValue();
+		} catch (RuntimeException re) {
+			logger.error("findPageListByCriteria error",re);
+			throw re;
+		}
     }
-
+    
     /* (non-Javadoc)
-     * <p>Title: getTotalCount</p>
-     * <p>Description: </p>
-     * @param hql
-     * @param values
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#getTotalCount(java.lang.String, java.util.Map)
+     * @see com.beauty.core.dao.GenericDaoSupport#getTotalCount(java.lang.String, java.lang.Object[])
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public int getTotalCount(final String hql,final Object[] values)
     {
-        Object count = this.getHibernateTemplate().execute(
-                new HibernateCallback() {
-                    public Object doInHibernate(Session session)
-                            throws HibernateException, SQLException {
+    	try {
+    		Object count = this.getHibernateTemplate().execute(
+                    new HibernateCallback() {
+                        public Object doInHibernate(Session session)
+                                throws HibernateException, SQLException {
 
-                        String countHql = generateCountHql(hql);
-                        
-                        Query query = session.createQuery(countHql);
-                        
-                        setParameter(query,values);
-                        
-                        Integer count = ((Long)query.uniqueResult()).intValue();
-                        return count;
-                    }
-                });
-        return ((Integer)count).intValue();
+                            String countHql = generateCountHql(hql);
+                            
+                            Query query = session.createQuery(countHql);
+                            
+                            setParameter(query,values);
+                            
+                            Integer count = ((Long)query.uniqueResult()).intValue();
+                            return count;
+                        }
+                    });
+            return ((Integer)count).intValue();
+		} catch (RuntimeException re) {
+			logger.error("getTotalCount error",re);
+			throw re;
+		}
     }
     
+    
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#getTotalCount(java.lang.String, java.lang.Object)
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public int getTotalCount(final String hql,final Object value)
     {
-        Object count = this.getHibernateTemplate().execute(
-                new HibernateCallback() {
-                    public Object doInHibernate(Session session)
-                            throws HibernateException, SQLException {
-                        
-                        String countHql = generateCountHql(hql);
-                        
-                        Query query = session.createQuery(countHql);
-                        query.setParameter(0,value);
-                        Integer count = ((Long)query.uniqueResult()).intValue();
-                        return count;
-                    }
-                });
-        return ((Integer)count).intValue();
+    	try {
+    		Object count = this.getHibernateTemplate().execute(
+                    new HibernateCallback() {
+                        public Object doInHibernate(Session session)
+                                throws HibernateException, SQLException {
+                            
+                            String countHql = generateCountHql(hql);
+                            
+                            Query query = session.createQuery(countHql);
+                            query.setParameter(0,value);
+                            Integer count = ((Long)query.uniqueResult()).intValue();
+                            return count;
+                        }
+                    });
+            return ((Integer)count).intValue();
+		} catch (RuntimeException re) {
+			logger.error("getTotalCount error",re);
+			throw re;
+		}
     }
     
     /* (non-Javadoc)
-     * <p>Title: list</p>
-     * <p>Description: </p>
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#list()
+     * @see com.beauty.core.dao.GenericDaoSupport#list()
      */
     public List<T> list()
     {
-        return getHibernateTemplate().loadAll(entityClass);
+    	try {
+    		return getHibernateTemplate().loadAll(entityClass);
+		} catch (RuntimeException re) {
+			logger.error("list error",re);
+			throw re;
+		}
     }
-
-    /* (non-Javadoc)
-     * <p>Title: save</p>
-     * <p>Description: </p>
-     * @param entity
-     * @see com.foryou.framework.dao.GenericDaoSupport#save(java.lang.Object)
+    
+     /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#save(java.lang.Object)
      */
     public Serializable save(T entity)
     {
-       return getHibernateTemplate().save(entity);
+    	try {
+    		return getHibernateTemplate().save(entity);
+		} catch (RuntimeException re) {
+			logger.error("save error",re);
+			throw re;
+		}
     }
 
     /* (non-Javadoc)
-     * <p>Title: saveOrUpdate</p>
-     * <p>Description: </p>
-     * @param entity
-     * @see com.foryou.framework.dao.GenericDaoSupport#saveOrUpdate(java.lang.Object)
+     * @see com.beauty.core.dao.GenericDaoSupport#saveOrUpdate(java.lang.Object)
      */
     public void saveOrUpdate(T entity)
     {
-        getHibernateTemplate().saveOrUpdate(entity);
+    	try {
+    		getHibernateTemplate().saveOrUpdate(entity);
+		} catch (RuntimeException re) {
+			logger.error("saveOrUpdate error",re);
+			throw re;
+		}
     }
 
     /* (non-Javadoc)
-     * <p>Title: saveOrUpdateAll</p>
-     * <p>Description: </p>
-     * @param entities
-     * @see com.foryou.framework.dao.GenericDaoSupport#saveOrUpdateAll(java.util.Collection)
+     * @see com.beauty.core.dao.GenericDaoSupport#saveOrUpdateAll(java.util.Collection)
      */
     public void saveOrUpdateAll(Collection<T> entities)
     {
-        getHibernateTemplate().saveOrUpdateAll(entities);
+    	try {
+    		getHibernateTemplate().saveOrUpdateAll(entities);
+		} catch (RuntimeException re) {
+			logger.error("saveOrUpdateAll error",re);
+			throw re;
+		}
     }
-
+    
     /* (non-Javadoc)
-     * <p>Title: update</p>
-     * <p>Description: </p>
-     * @param entity
-     * @see com.foryou.framework.dao.GenericDaoSupport#update(java.lang.Object)
+     * @see com.beauty.core.dao.GenericDaoSupport#update(java.lang.Object)
      */
     public void update(T entity)
     {
-        getHibernateTemplate().update(entity);
+    	try {
+    		getHibernateTemplate().update(entity);
+		} catch (RuntimeException re) {
+			logger.error("update error",re);
+			throw re;
+		}
     }
-
+    
     /* (non-Javadoc)
-     * <p>Title: updateEntity</p>
-     * <p>Description:  根据条件更新数据</p>
-     * @param hql hql expression eg: from User where name =:user
-     * @param map 根据变量替换hql语句中的参数
-     * @return
-     * @see com.foryou.framework.dao.GenericDaoSupport#updateEntity(java.lang.String, java.util.Map)
+     * @see com.beauty.core.dao.GenericDaoSupport#updateEntity(java.lang.String, java.util.Map)
      */
     public int updateEntity(final String hql, final Map<String, ? extends Object> map)
     {
-        return getHibernateTemplate().execute(new HibernateCallback<Integer>(){
-            public Integer doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query=session.createQuery(hql);
+    	try {
+            return getHibernateTemplate().execute(new HibernateCallback<Integer>(){
+                public Integer doInHibernate(Session session)
+                        throws HibernateException, SQLException
+                {
+                    Query query=session.createQuery(hql);
+                    
+                    setParameter(query,map);
+                    
+                    return query.executeUpdate();
+                }
                 
-                setParameter(query,map);
-                
-                return query.executeUpdate();
-            }
-            
-        });
+            });
+		} catch (RuntimeException re) {
+			logger.error("updateEntity error",re);
+			throw re;
+		}
     }
 
-    /* (non-Javadoc)
-     * <p>Title: updateEntity</p>
-     * <p>Description:  根据条件更新数据</p>
-     * @param hql hql expression eg: from User where name =?
-     * @param map 根据变量替换hql语句中的参数
-     * @return
+     /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#updateEntity(java.lang.String, java.lang.Object[])
      */
     public int updateEntity(final String hql,final Object[] values)
     {
-        return getHibernateTemplate().execute(new HibernateCallback<Integer>(){
-            public Integer doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query=session.createQuery(hql);
-                
-                setParameter(query,values);
-                
-                return query.executeUpdate();
-            }
-        });
+    	try {
+            return getHibernateTemplate().execute(new HibernateCallback<Integer>(){
+                public Integer doInHibernate(Session session)
+                        throws HibernateException, SQLException
+                {
+                    Query query=session.createQuery(hql);
+                    
+                    setParameter(query,values);
+                    
+                    return query.executeUpdate();
+                }
+            });
+		} catch (RuntimeException re) {
+			logger.error("updateEntity error",re);
+			throw re;
+		}
     }
     
     /* (non-Javadoc)
-     * <p>Title: updateEntity</p>
-     * <p>Description:  根据条件更新数据</p>
-     * @param hql hql expression eg: from User where name =?
-     * @param map 根据变量替换hql语句中的参数
-     * @return
+     * @see com.beauty.core.dao.GenericDaoSupport#updateEntity(java.lang.String, java.lang.Object)
      */
     public int updateEntity(final String hql,final Object value)
     {
-        return getHibernateTemplate().execute(new HibernateCallback<Integer>(){
-            public Integer doInHibernate(Session session)
-                    throws HibernateException, SQLException
-            {
-                Query query=session.createQuery(hql);
-                query.setParameter(0,value);
-                return query.executeUpdate();
-            }
-        });
+    	try {
+    		return getHibernateTemplate().execute(new HibernateCallback<Integer>(){
+                public Integer doInHibernate(Session session)
+                        throws HibernateException, SQLException
+                {
+                    Query query=session.createQuery(hql);
+                    query.setParameter(0,value);
+                    return query.executeUpdate();
+                }
+            });
+		} catch (RuntimeException re) {
+			logger.error("updateEntity error",re);
+			throw re;
+		}
     }
     
-    /**
-     * findListByDetachedCriteria
-     * author TivyH 2012-7-11 下午03:58:15
-     * @param detachedCriteria
-     * @return List
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findListByDetachedCriteria(org.hibernate.criterion.DetachedCriteria)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public List<T> findListByDetachedCriteria(final DetachedCriteria detachedCriteria) {
-        return getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(final Session session)
-                    throws HibernateException, SQLException
-            {
-                Criteria criteria = detachedCriteria.getExecutableCriteria(session);
-                return criteria.list();
-            }
-        });
+	public List<T> findListByDetachedCriteria(final DetachedCriteria detachedCriteria) {
+    	try {
+            return getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(final Session session)
+                        throws HibernateException, SQLException
+                {
+                    Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+                    return criteria.list();
+                }
+            });
+		} catch (RuntimeException re) {
+			logger.error("findListByDetachedCriteria error",re);
+			throw re;
+		}
     }
 
-    /**
-     * findListByDetachedCriteria
-     * author TivyH 2012-7-11 下午03:58:15
-     * @param detachedCriteria
-     * @param firstResult
-     * @param maxResults
-     * @return List
+
+    
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findListByDetachedCriteria(org.hibernate.criterion.DetachedCriteria, int, int)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public List<T> findListByDetachedCriteria(final DetachedCriteria detachedCriteria, final int firstResult, final int maxResults) {
-        return getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(final Session session)
-                    throws HibernateException, SQLException
-            {
-                Criteria criteria = detachedCriteria.getExecutableCriteria(session);
-                criteria.setFirstResult(firstResult);
-                criteria.setMaxResults(maxResults);
-                return criteria.list();
-            }
-        });
+    	try {
+    		return getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(final Session session)
+                        throws HibernateException, SQLException
+                {
+                    Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+                    criteria.setFirstResult(firstResult);
+                    criteria.setMaxResults(maxResults);
+                    return criteria.list();
+                }
+            });
+		} catch (RuntimeException re) {
+			logger.error("findListByDetachedCriteria error",re);
+			throw re;
+		}
     }
 
-    /**
-     * findTotalCountByDetachedCriteria
-     * author TivyH 2012-7-11 下午03:58:15
-     * @param detachedCriteria
-     * @return int
+
+    
+     /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findTotalCountByDetachedCriteria(org.hibernate.criterion.DetachedCriteria)
      */
     public int findTotalCountByDetachedCriteria(final DetachedCriteria detachedCriteria)
     {
-        Integer totalCount = getHibernateTemplate().execute(new HibernateCallback<Integer>(){
-            public Integer doInHibernate(final Session session)
-                    throws HibernateException, SQLException
+    	try {
+    		Integer totalCount = getHibernateTemplate().execute(new HibernateCallback<Integer>(){
+                public Integer doInHibernate(final Session session)
+                        throws HibernateException, SQLException
+                {
+                    //query total count
+                    Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+                    
+                        Number number = (Number) criteria.setProjection(
+                                Projections.rowCount()).uniqueResult();
+                    return number.intValue();
+                }
+            });
+            if(totalCount !=null)
             {
-                //query total count
-                Criteria criteria = detachedCriteria.getExecutableCriteria(session);
-                
-                    Number number = (Number) criteria.setProjection(
-                            Projections.rowCount()).uniqueResult();
-                return number.intValue();
+                return totalCount;
             }
-        });
-        if(totalCount !=null)
-        {
-            return totalCount;
-        }
-        else
-        {
-            return 0;
-        }
-            
+            else
+            {
+                return 0;
+            }
+		} catch (RuntimeException re) {
+			logger.error("findTotalCountByDetachedCriteria error",re);
+			throw re;
+		}
     }
     
-    /**
-     * findListByDetachedCriteria
-     * author TivyH 2012-7-11 下午03:58:15
-     * @param detachedCriteria
-     * @param page
-     * @return List
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findListByDetachedCriteria(org.hibernate.criterion.DetachedCriteria, com.beauty.core.web.page.Page, org.hibernate.criterion.Order[])
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Page findListByDetachedCriteria(final DetachedCriteria detachedCriteria, final Page page,Order[] order) {
-        
-        //query total count
-        if(page.getTotalCount() ==0 || page.getCurrentPageNo() == 1)
-        {
-            page.setTotalCount(findTotalCountByDetachedCriteria(detachedCriteria));
-            detachedCriteria.setProjection(null);
-        }
-        
-        if(order != null && order.length>0)
-        {
-            for(Order item : order)
+    	try {
+    		//query total count
+            if(page.getTotalCount() ==0 || page.getCurrentPageNo() == 1)
             {
-                detachedCriteria.addOrder(item);
+                page.setTotalCount(findTotalCountByDetachedCriteria(detachedCriteria));
+                detachedCriteria.setProjection(null);
             }
-        }
-        
-        getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(final Session session)
-                    throws HibernateException, SQLException
+            
+            if(order != null && order.length>0)
             {
-                
-                Criteria criteria = detachedCriteria.getExecutableCriteria(session);
-                
-                List list = criteria.setFirstResult(page.getFirstResult()).setMaxResults(page.getMaxResults()).list();
-                
-                page.setResult(list);
-                
-                return list;
+                for(Order item : order)
+                {
+                    detachedCriteria.addOrder(item);
+                }
             }
-        });
-         return page;
+            
+            getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(final Session session)
+                        throws HibernateException, SQLException
+                {
+                    
+                    Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+                    
+                    List list = criteria.setFirstResult(page.getFirstResult()).setMaxResults(page.getMaxResults()).list();
+                    
+                    page.setResult(list);
+                    
+                    return list;
+                }
+            });
+             return page;
+		} catch (RuntimeException re) {
+			logger.error("findListByDetachedCriteria error",re);
+			throw re;
+		}
     }
     
-    
-    /************************************
-     * Criteria测试通过Hibernate去重复方法
-     * author TivyH 2012-7-11 下午03:58:15
-     * @param detachedCriteria
-     * @param page
-     * @return List
-     *************************************/
+    /* (non-Javadoc)
+     * @see com.beauty.core.dao.GenericDaoSupport#findListByDetachedCriteria(org.hibernate.criterion.DetachedCriteria, com.beauty.core.web.page.Page, org.hibernate.criterion.Order[], java.lang.String[])
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Page findListByDetachedCriteria(final DetachedCriteria detachedCriteria, final Page page,Order[] order,String[] distincField) {
         
-        //query total count
-        if(page.getTotalCount() ==0 || page.getCurrentPageNo() == 1)
-        {
-            page.setTotalCount(findTotalCountByDetachedCriteria(detachedCriteria));
+    	try {
+    		//query total count
+            if(page.getTotalCount() ==0 || page.getCurrentPageNo() == 1)
+            {
+                page.setTotalCount(findTotalCountByDetachedCriteria(detachedCriteria));
+                
+                if ( null != distincField && distincField.length >0 ) {
+                detachedCriteria.setProjection(Projections.distinct(Projections.id()));
+                for(int i=0;i< distincField.length;i++){ 
+    	            //非重复字段
+    	            Projections.property(distincField[i]);
+    	            }
+                } else {
+                	detachedCriteria.setProjection(null);
+                }
+            }
             
-            if ( null != distincField && distincField.length >0 ) {
-            detachedCriteria.setProjection(Projections.distinct(Projections.id()));
-            for(int i=0;i< distincField.length;i++){ 
-	            //非重复字段
-	            Projections.property(distincField[i]);
-	            }
-            } else {
-            	detachedCriteria.setProjection(null);
-            }
-        }
-        
-        if(order != null && order.length>0)
-        {
-            for(Order item : order)
+            if(order != null && order.length>0)
             {
-                detachedCriteria.addOrder(item);
+                for(Order item : order)
+                {
+                    detachedCriteria.addOrder(item);
+                }
             }
-        }
-        
-        getHibernateTemplate().executeFind(new HibernateCallback(){
-            public Object doInHibernate(final Session session)
-                    throws HibernateException, SQLException
-            {
-                
-                Criteria criteria = detachedCriteria.getExecutableCriteria(session);
-                
-                List list = criteria.setFirstResult(page.getFirstResult()).setMaxResults(page.getMaxResults()).list();
-                
-                page.setResult(list);
-                
-                return list;
-            }
-        });
-         return page;
+            
+            getHibernateTemplate().executeFind(new HibernateCallback(){
+                public Object doInHibernate(final Session session)
+                        throws HibernateException, SQLException
+                {
+                    
+                    Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+                    
+                    List list = criteria.setFirstResult(page.getFirstResult()).setMaxResults(page.getMaxResults()).list();
+                    
+                    page.setResult(list);
+                    
+                    return list;
+                }
+            });
+             return page;
+		} catch (RuntimeException re) {
+			logger.error("findListByDetachedCriteria error",re);
+			throw re;
+		}
     }
     
     
@@ -775,22 +844,28 @@ public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateD
      */
     public Object queryUniqueResult(final String hql, final Map<String, ? extends Object> property)
     {
-        return getHibernateTemplate().execute(
-                new HibernateCallback<Object>() {
-                    public Object doInHibernate(Session session){
-                        
-                        Query query = session.createQuery(hql);
-                        
-                        setParameter(query, property);
-                        
-                        return query.uniqueResult();
-                    }
-          });
+    	try {
+    		return getHibernateTemplate().execute(
+                    new HibernateCallback<Object>() {
+                        public Object doInHibernate(Session session){
+                            
+                            Query query = session.createQuery(hql);
+                            
+                            setParameter(query, property);
+                            
+                            return query.uniqueResult();
+                        }
+              });
+		} catch (RuntimeException re) {
+			logger.error("queryUniqueResult error",re);
+			throw re;
+		}
     }
     
     @SuppressWarnings("rawtypes")
     private void setParameter(Query query,Map<String,? extends Object> property)
     {
+    	
         if(property!=null&&property.keySet()!=null&&property.keySet().size()>0)
         {
             for(Map.Entry<String,? extends Object> m : property.entrySet())

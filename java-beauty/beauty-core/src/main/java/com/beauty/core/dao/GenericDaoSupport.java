@@ -292,7 +292,7 @@ public interface GenericDaoSupport<T,PK extends Serializable>
      * @param distincField --非重复字段 
      * @return List
      */
-    public Page findListByDetachedCriteria(final DetachedCriteria detachedCriteria, final Page page,Order[] order,String[] distincField); 
+    public Page findListByDetachedCriteria(DetachedCriteria detachedCriteria, Page page,Order[] order,String[] distincField); 
     
     /**
      * 
