@@ -25,6 +25,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
@@ -41,6 +43,8 @@ import com.beauty.core.web.page.Page;
  */
 public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateDaoSupport implements GenericDaoSupport<T, PK>
 {
+	final Logger logger = LoggerFactory.getLogger(GenericDaoSupportImpl.class);
+	
     protected Class<T> entityClass;
     
     protected String className;
@@ -55,12 +59,17 @@ public class GenericDaoSupportImpl<T,PK extends Serializable> extends HibernateD
      * <p>Title: delete</p>
      * <p>Description: </p>
      * @param entity
-     * @see com.foryou.framework.dao.GenericDaoSupport#delete(java.lang.Object)
+     * @see com.beauty.core.dao.impl.GenericDaoSupport#delete(java.lang.Object)
      */
     public void delete(T entity)
     {
-        Assert.notNull(entity);
-        getHibernateTemplate().delete(entity);
+    	try {
+    		getHibernateTemplate().delete(entity);
+    		logger.debug("delete successful");
+		} catch (RuntimeException re) {
+			logger.error("delete entity error",re);
+			throw re;
+		}
     }
 
     /* (non-Javadoc)

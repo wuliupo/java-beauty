@@ -8,8 +8,10 @@
 	<constant name="struts.custom.i18n.resources" value="i18n/globalMessages" />
 	<constant name="struts.objectFactory" value="spring" />
 	<constant name="struts.objectFactoy.spring.autoWire" value="name" />
-	<constant name="struts.objectFactory.spring.useClassCache" value="true" />
-	<constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true" />
+	<constant name="struts.objectFactory.spring.useClassCache"
+		value="true" />
+	<constant name="struts.objectFactory.spring.autoWire.alwaysRespect"
+		value="true" />
 	<constant name="struts.action.extension" value="action" />
 
 	<constant name="struts.freemarker.templatesCache" value="true" />
@@ -25,14 +27,12 @@
 	<!--导入struts-default.xml文件 -->
 	<include file="struts-default.xml"></include>
 
-	<package name="basics-default" extends="struts-default"
-		abstract="true">
+	<package name="basics-default" extends="struts-default" abstract="true">
 		<result-types>
 			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
 		</result-types>
 		<interceptors>
-			<interceptor name="json"
-				class="org.apache.struts2.json.JSONInterceptor" />
+			<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor" />
 			<interceptor-stack name="baseStack">
 				<interceptor-ref name="exception" />
 				<interceptor-ref name="json" />
@@ -44,14 +44,17 @@
 		<global-results>
 			<result name="json" type="json">
 				<param name="root">page</param>
-				<param name="ignoreHierarchy">false</param><!-- 父类与子类一起返回 -->
-				<param name="excludeNullProperties">true</param><!-- 自动过滤空值 -->
+				<param name="ignoreHierarchy">false</param>
+				<param name="excludeNullProperties">true</param>
 			</result>
-			<result name="error">/500.jsp</result>
+			<result name="error">/error.jsp</result>
 		</global-results>
+		
 		<global-exception-mappings>
-			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+			<exception-mapping result="error" exception="java.lang.Exception"/>
+			<exception-mapping result="error" exception="com.beauty.core.exception.ServiceException"/>
 		</global-exception-mappings>
+		
 	</package>
 
 	<package name="system" extends="basics-default" namespace="/system">
