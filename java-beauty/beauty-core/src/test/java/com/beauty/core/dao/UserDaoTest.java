@@ -11,14 +11,20 @@ package com.beauty.core.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import com.beauty.core.BaseTest;
 import com.beauty.system.bean.User;
 import com.beauty.system.dao.UserDao;
-
 
  /**
  *
@@ -28,6 +34,8 @@ import com.beauty.system.dao.UserDao;
  */
 public class UserDaoTest extends BaseTest {
 
+	private final Logger logger = LoggerFactory.getLogger(UserDaoTest.class);
+	
 	@Autowired
 	private UserDao userDao;
 
@@ -36,7 +44,10 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testDeleteT() {
-		fail("Not yet implemented");
+		User user = new User();
+		user.setName("Test AAA");
+		userDao.save(user);
+		userDao.delete(user);
 	}
 
 	/**
@@ -44,7 +55,10 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testDeletePK() {
-		fail("Not yet implemented");
+		User user = new User();
+		user.setName("BBBB");
+		userDao.save(user);
+		userDao.delete(user.getId());
 	}
 
 	/**
@@ -52,7 +66,16 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testDeleteAll() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		java.util.List<User> userList = new ArrayList<User>();
+		for(int i=0;i<50;i++)
+		{
+			User user = new User();
+			user.setName("asdae"+i);
+			userList.add(user);
+		}
+		userDao.saveOrUpdateAll(userList);
+		userDao.deleteAll(userList);
 	}
 
 	/**
@@ -60,7 +83,12 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testFindByPrimaryKey() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		User user = new User();
+		user.setName("erqwe");
+		userDao.save(user);
+		User user2 = userDao.findByPrimaryKey(user.getId());
+		Assert.assertSame(user, user2);
 	}
 
 	/**
@@ -68,7 +96,14 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testFindByExample() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		User user = new User();
+		user.setName("Test Name");
+		userDao.save(user);
+		User user2 = new User();
+		user2.setName(user.getName());
+		List<User> userList =userDao.findByExample(user2);
+		Assert.assertTrue(userList.size()>0);
 	}
 
 	/**
@@ -76,7 +111,23 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testFindListByCriteriaStringMapOfStringObject() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		User user = new User();
+		user.setName("Test");
+		userDao.save(user);
+		
+		String hql = "from User where name like :name";
+		java.util.Map<String,Object> property = new HashMap<String, Object>();
+		property.put("name", "Test%");
+		List<User> userList = userDao.findListByCriteria(hql, property);
+		
+		Assert.assertTrue(userList.size()>0);
+		
+		for(User entry : userList)
+		{
+			System.out.println(entry.getId()+"    "+entry.getName());
+		}
+		
 	}
 
 	/**
@@ -84,7 +135,14 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testFindListByCriteriaStringObjectArray() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		User user = new User();
+		user.setName("erqwe");
+		userDao.save(user);
+		
+		String hql = "";
+		java.lang.Object[] values = new java.lang.Object[1];
+		userDao.findListByCriteria(hql, values);
 	}
 
 	/**
@@ -199,7 +257,10 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testSaveOrUpdate() {
-		fail("Not yet implemented");
+		User user = new User();
+		user.setName("Test Name");
+		userDao.saveOrUpdate(user);
+		Assert.assertEquals("Test Name", userDao.findByPrimaryKey(user.getId()).getName());
 	}
 
 	/**
@@ -207,7 +268,14 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testSaveOrUpdateAll() {
-		fail("Not yet implemented");
+		java.util.List<User> userList = new ArrayList<User>();
+		for(int i=0;i<50;i++)
+		{
+			User user = new User();
+			user.setName("Test Name"+i);
+			userList.add(user);
+		}
+		userDao.saveOrUpdateAll(userList);
 	}
 
 	/**
@@ -215,7 +283,12 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testUpdate() {
-		fail("Not yet implemented");
+		User user = new User();
+		user.setName("zhangsan");
+		userDao.save(user);
+		logger.info(user.getId()+"");
+		user.setName("zhangsan 11");
+		userDao.update(user);
 	}
 
 	/**
