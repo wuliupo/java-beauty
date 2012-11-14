@@ -12,7 +12,8 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
-			<scope>test</scope>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.struts</groupId>
@@ -76,6 +77,12 @@
 			<version>1.2.8</version>
 			<type>pom</type>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>ehcache</artifactId>
+					<groupId>ehcache</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -154,6 +161,20 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>4.1.8.Final</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>2.4.3</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-spring-plugin</artifactId>
 			<version>2.3.4.1</version>
@@ -163,7 +184,21 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.8</version>
+			<version>1.6.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
