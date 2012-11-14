@@ -1,0 +1,9 @@
+mvn install:install-file -DgroupId=net.sf.ehcache -DartifactId=ehcache-core -Dversion=2.4.3 -Dpackaging=jar -Dfile=d:\ehcache-core-2.4.3.jar
+
+mvn install:install-file -DgroupId=org.slf4j -DartifactId=slf4j-api -Dversion=1.6.1 -Dpackaging=jar -Dfile=d:\slf4j-api-1.6.1.jar
+
+mvn install:install-file -DgroupId=junit -DartifactId=junit -Dversion=4.10 -Dpackaging=jar -Dfile=d:\junit-4.10.jar
+
+mvn install:install-file -DgroupId=org.slf4j -DartifactId=slf4j-log4j12 -Dversion=1.6.1 -Dpackaging=jar -Dfile=d:\slf4j-log4j12-1.6.1.jar
+
+mvn install:install-file -DgroupId=javax -DartifactId=j2ee -Dversion=1.4 -Dpackaging=jar -Dfile=d:\j2ee-1.4.jar

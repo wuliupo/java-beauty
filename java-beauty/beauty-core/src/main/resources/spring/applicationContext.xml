@@ -107,7 +107,7 @@
 
 		<property name="sessionFactory">
 
-			<ref local="sessionFactory" />
+			<ref local="sessionFactory"/>
 
 		</property>
 
@@ -134,7 +134,7 @@
 	</tx:advice>
 	
 	<aop:config expose-proxy="true">
-		<aop:pointcut id="txPointcut" expression="execution(* com.beauty.system.service..*.*(..))" />
+		<aop:pointcut id="txPointcut" expression="execution(* com.beauty..*.service.impl.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
 	</aop:config>
 
