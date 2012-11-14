@@ -137,12 +137,14 @@ public class UserDaoTest extends BaseTest {
 	public void testFindListByCriteriaStringObjectArray() {
 		//fail("Not yet implemented");
 		User user = new User();
-		user.setName("erqwe");
+		user.setName("erqweerasewxtary212");
 		userDao.save(user);
 		
-		String hql = "";
+		String hql = "from User where name = ?";
 		java.lang.Object[] values = new java.lang.Object[1];
-		userDao.findListByCriteria(hql, values);
+		values[0] = "erqweerasewxtary212";
+		List<User> userList = userDao.findListByCriteria(hql, values);
+		Assert.assertEquals(user.getId(), userList.get(0).getId());
 	}
 
 	/**
@@ -150,7 +152,9 @@ public class UserDaoTest extends BaseTest {
 	 */
 	@Test
 	public void testFindListByCriteriaStringObject() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+		
+		
 	}
 
 	/**
