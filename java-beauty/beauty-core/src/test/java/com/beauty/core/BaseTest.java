@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext*.xml" })
 public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
-	final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+	private final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
 	public BaseTest() {
 		PropertyConfigurator.configure(BaseTest.class.getClassLoader().getResource("log4j.properties"));
