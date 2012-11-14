@@ -144,8 +144,8 @@ public abstract class BaseHibernateDao<T, PK extends Serializable> implements Ba
 	 * @see
 	 * com.beauty.core.dao.GenericDaoSupport#findByExample(java.lang.Object)
 	 */
-	@SuppressWarnings("rawtypes")
-	public List findByExample(T entity) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<T> findByExample(T entity) {
 		try {
 			Session session = getSession();
 			List results = session.createCriteria(entityClass).add(Example.create(entity)).list();
