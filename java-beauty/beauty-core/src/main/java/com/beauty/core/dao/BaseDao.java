@@ -90,8 +90,7 @@ public abstract interface BaseDao<T,PK extends Serializable>
      * @param id
      * @return T
      */
-    @SuppressWarnings("rawtypes")
-    public List findByExample(T entity);
+    public List<T> findByExample(T entity);
     
     /**
      * load all
