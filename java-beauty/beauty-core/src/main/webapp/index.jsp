@@ -4,16 +4,11 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<script type="text/javascript">
-		function submit()
-		{
-			document.loginForm.submit();
-		}
-	</script>
+	<script type="text/javascript" src="1.js"></script>
 </head>
 <body>
 
-<form name="loginForm" action="system/user_login.action" method="post">
+<form id="loginForm" name="loginForm" action="system/user_login.action" method="post">
 	用户:<input type="text" name="username"/><br/>
 	密码:<input type="password" name="password"/><br/>
 	<a href="#" onclick="submit();">点击登录</a>

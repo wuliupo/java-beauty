@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>管理中心</title>
+ 
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ 
+    <!-- ExtJS -->
+    <link rel="stylesheet" type="text/css" href="js/extjs/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="js/extjs/bootstrap.js"></script>
+ 
+    <!-- GC -->
+    <style type="text/css">
+    p {
+        margin:5px;
+    }
+    .settings {
+        background-image:url(resources/icons/folder_wrench.png);
+    }
+    .nav {
+        background-image:url(resources/icons/folder_go.png);
+    }
+    .info {
+        background-image:url(resources/icons/information.png);
+    }
+    .tabico {
+        background-image:url(resources/icons/tabs.gif);
+    }
+    </style>
+ 
+    <style type="text/css">
+        *{font-size:12px!important;}
+    </style>
+ 
+  </head>
+ 
+  <body>
+ 
+  <script type="text/javascript">
+ 
+//本函数执行在head里引入js并执行
+ 
+function loadJS(file){
+    var js = document.createElement('script');
+    js.setAttribute('type', 'text/javascript');
+    js.setAttribute('src', file);
+    document.getElementsByTagName('head')[0].appendChild(js);
+    return false;
+} 
+ 
+    //引入Extjs所有类
+    Ext.require(['*']);
+ 
+    Ext.onReady(function() {
+ 
+        //弹出式描述功能初始化
+        Ext.QuickTips.init();
+ 
+        //使用cookie保存用户设置信息
+        Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
+ 
+        //创建全景视图端
+        var viewport = Ext.create('Ext.Viewport', {
+            id: 'border-example',
+            layout: 'border',//框式布局
+            items: [
+ 
+            // 创建一个通用组建实例
+            Ext.create('Ext.Component', {
+                region: 'north',
+                height: 32,
+                autoEl: {
+                    tag: 'div',
+                    html:'<p>北通用区域，这里放置menus、toolbars、advertisements控件。【www.jsper.org】</p>'
+                }
+            }), {
+                xtype: 'tabpanel',
+                region: 'east',
+                title: '东区',
+                dockedItems: [{
+                    dock: 'top',
+                    xtype: 'toolbar',
+                    items: [ '->', {
+                       xtype: 'button',
+                       text: '测试按钮',
+                       tooltip: '这是一个测试按钮'
+                    }]
+                }],
+                animCollapse: true,
+                collapsible: true,
+                split: true,
+                width: 225,
+                minSize: 175,
+                maxSize: 400,
+                margins: '0 5 0 0',
+                activeTab: 1,
+                tabPosition: 'bottom',
+                items: [{
+                    html: '<p>一个选项卡组建可以占据这里</p>',
+                    title: '一个选项卡',
+                    autoScroll: true
+                }, Ext.create('Ext.grid.PropertyGrid', {
+                        title: '属性表',
+                        closable: true,
+                        source: {
+                            "案例名称": "动态添加tab",
+                            "作者": "陈建宇jsper.org",
+                            "创建日期": Ext.Date.parse('4/17/2012', 'm/d/Y'),
+                            "测试环境": "Win7+Chrome",
+                            "Ext版本": "Extjs4.1"
+                        }
+                    })]
+            }, {
+                region: 'west',
+                stateId: 'navigation-panel',
+                id: 'west-panel',
+                title: '西区',
+                split: true,
+                width: 200,
+                minWidth: 175,
+                maxWidth: 400,
+                collapsible: true,
+                animCollapse: true,
+                margins: '0 0 0 5',
+                layout: 'accordion',
+                items: [{
+                    title: '数据管理',
+                    iconCls: 'nav', //icon图标使用了<HEAD>里的样式
+                    items:[
+                        Ext.create('Ext.tree.Panel', {
+                            border:false,
+                            //useArrows: true,
+                            height:65535,
+                            width:'100%',
+                            id:'menu_tree',
+                            root: {
+                                text: '导航菜单',//节点名称
+                                expanded: true,//默认展开根节点
+                                children:
+                                    //所有节点的JSON字符串：
+                                    [{"children":[{"children":[],"cls":"file","id":"node_2","leaf":true,"text":"jsper.org版权所有","hrefTarget":"biz_js/umgr.js"},{"children":[],"cls":"file","id":"node_3","leaf":true,"text":"修改密码","hrefTarget":"biz_js/chgpwd.js"}],"cls":"folder","id":"node_1","leaf":false,"text":"系统管理","hrefTarget":"biz_js/syscfg.js"},{"children":[{"children":[],"cls":"file","id":"node_10","leaf":true,"text":"jsper.org Ext案例","hrefTarget":"biz_js/demo.js"},{"children":[{"children":[],"cls":"file","id":"node_12","leaf":true,"text":"留管子节点","hrefTarget":"biz_js/cldnode.js"}],"cls":"folder","id":"node_11","leaf":false,"text":"留言管理","hrefTarget":"biz_js/fadebook.js"}],"cls":"folder","id":"node_5","leaf":false,"text":"业务管理","hrefTarget":"biz_js/biz.js"}]
+ 
+                                },
+                                listeners: {//tree节点事件监听器
+ 
+                                            //当点击节点时，执行函数：
+                                            'itemclick': function(view,selectedItem){
+ 
+                                                /*
+                                                    业务流程：当用户点击tree节点的时候，Extjs获取当前被选中的节点对象，
+                                                    并在tab容器tabpanel中尝试获取对应的tab组建对象。
+                                                    如果该对象不为undefined，说明该tab之前已经创建过，
+                                                    则调用tab容器tabpanel.setActiveTab(tab)方法显示此tab，
+                                                    如果该对象为undefined，则说明被选中节点还没有创建对应的tab，
+                                                    那么就调用tab容器tabpanel的add方法传入当前被选中节点对象动态添加创建tab。
+ 
+                                                    选项卡的内容区域的呈现方式有两种可选方案：
+                                                    一是采用异步加载js文件的方式，二是采用iframe框架嵌入目标页面的方式。这里采用了第一种方式。
+                                                */
+ 
+                                                //获得tab容器tabpanel
+                                                var tabPanel=Ext.getCmp('tabPanel');
+ 
+                                                //获得被选中的tab组建对象
+                                                var tab = tabPanel.getComponent(selectedItem.data.id);
+ 
+                                                //如果此tab还未被创建，则向tab容器添加一个tab
+                                                if(!tab){
+                                                    tab = tabPanel.add({
+                                                        id:selectedItem.data.id,
+                                                        title:selectedItem.data.text,
+                                                        closable:true,
+                                                        autoWidth:true,
+                                                        autoHeight:true,
+                                                        active:true//为了兼容IE9
+                                                        //html:'<p>id:'+selectedItem.data.id+'</p>'
+                                                    });
+ 
+                                                    //将tab设置为当前可见可操作tab
+                                                    tabPanel.setActiveTab(tab);//其实这步是多余的，但是在IE9下，没这步就显示不正常。
+ 
+                                                    //异步加载js并执行，参数为要加载的JS文件的URL，这个JS包含tab内容区内容的构建程序。
+                                                    loadJS(selectedItem.data.hrefTarget);//此函数为自定义函数，已在上面定义。
+                                                }
+ 
+                                                //将tab设置为当前可见可操作tab
+                                                tabPanel.setActiveTab(tab);
+ 
+                                            }
+                                }//,
+                        })
+                    ]
+                }, {
+                    title: '网站设置',
+                    html: '<p>这里放一些设置选项</p>',
+                    iconCls: 'settings'
+                }, {
+                    title: '相关信息',
+                    html: '<p>这里显示一些网站相关信息，比如访问量、会员数。</p>',
+                    iconCls: 'info'
+                }]
+            },
+            Ext.create('Ext.tab.Panel', {
+                id:'tabPanel',
+                region: 'center', //中心区在框布局中是必须定义的
+                deferredRender: false,
+                activeTab: 0,     //设置第一个选项卡为默认显示的
+ 
+                items: [{
+                    id:'mytab1',
+                    html: '<p>这是一个原本就存在的选项卡<br>不是动态添加的。<br>这个选项卡一般用来在用户登录后显示系统一些全局信息</p>',
+                    title: '非动态创建的tab 1',
+                    icon:'resources/icons/information.png',
+                    closable: true,
+                    autoScroll: true
+                }, {
+                    id:'mytab2',
+                    html: '<p>这是一个非动态创建的选项卡</p>',
+                    title: '非动态创建的tab 2',
+                    autoScroll: true
+                }]
+ 
+            })]
+        });
+ 
+        //展开tree的所有节点
+        Ext.getCmp('menu_tree').expandAll();
+ 
+    });
+ 
+  </script>
+  </body>
+</html>
