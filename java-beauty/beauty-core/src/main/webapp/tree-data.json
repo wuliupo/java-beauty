@@ -6,15 +6,18 @@ children: [{
     children:[{
         text:'Absolute',
         id:'absolute',
-        leaf:true
+        leaf:true,
+        url:'a.html'
     },{
         text:'Accordion',
         id:'accordion',
-        leaf:true
+        leaf:true,
+        url:'b.html'
     },{
         text:'Anchor',
         id:'anchor',
-        leaf:true
+        leaf:true,
+        url:'c.html'
     },{
         text:'Border',
         id:'border',

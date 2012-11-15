@@ -42,12 +42,26 @@ Ext.require(['Ext.panel.Panel', 'Ext.tab.Panel', 'Ext.tree.Panel',
              'Ext.data.TreeStore', 'Ext.container.Viewport',  
              'Ext.ux.TabCloseMenu']);
 
-Ext.onReady(function() {
+//数据模型
+Ext.regModel('menuInfo', {
+    fields: [
+        {name: 'id', type: 'string'},
+        {name: 'text', type: 'string'},
+        {name: 'leaf', type: 'boolean'},
+        {name: 'url', type: 'string'},
+        {name: 'description', type: 'string'},
+        {name: 'menuType', type: 'string'},
+        {name: 'checked', type: 'boolean'}
+    ]
+});
 
+Ext.onReady(function() {
+	
     <!-- 生成左边导航菜单  -->
     this.nav_items = [];
     
     this.store = Ext.create('Ext.data.TreeStore',{
+    	model : 'menuInfo',
     	root:{
     		expanded:true
     	},
@@ -79,7 +93,6 @@ Ext.onReady(function() {
     this.treePanel.getSelectionModel().on('select', function(selModel, selectedItem) {
         if (selectedItem.get('leaf')) {
             var _tabPanel = Ext.getCmp('center-panel');
-            
             var tab = _tabPanel.getComponent("tab_"+selectedItem.get("id"));
             //var tab = _tabPanel.child('panel[id="tab_'+selectedItem.get('id')+'"]');
             
@@ -88,13 +101,15 @@ Ext.onReady(function() {
                tab=_tabPanel.add({
                     closable: true,
                     id:'tab_'+selectedItem.get('id'),
-                    loader: {scripts:true,url:'index.jsp',autoLoad: true},
+                    loader: {scripts:true,url:selectedItem.data.url,autoLoad: true},
                     title: selectedItem.get('text'),
                     autoScroll: true,
                     active:true,
                     closable:true,
                     autoWidth:true,
-                    autoHeight:true
+                    autoHeight:true,
+                    text:'页面加载中，请稍后.....',
+                    timeout:9000
                 });
                
                //异步加载js文件
