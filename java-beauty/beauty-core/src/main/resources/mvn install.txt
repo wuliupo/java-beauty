@@ -7,3 +7,7 @@ mvn install:install-file -DgroupId=junit -DartifactId=junit -Dversion=4.10 -Dpac
 mvn install:install-file -DgroupId=org.slf4j -DartifactId=slf4j-log4j12 -Dversion=1.6.1 -Dpackaging=jar -Dfile=d:\slf4j-log4j12-1.6.1.jar
 
 mvn install:install-file -DgroupId=javax -DartifactId=j2ee -Dversion=1.4 -Dpackaging=jar -Dfile=d:\j2ee-1.4.jar
+
+mvn install:install-file -DgroupId=org.apache.struts -DartifactId=struts2-sitemesh-plugin -Dversion=2.3.4.1 -Dpackaging=jar -Dfile=d:\struts2-sitemesh-plugin-2.3.4.1.jar
+
+mvn install:install-file -DgroupId=opensymphony -DartifactId=sitemesh -Dversion=2.4.2 -Dpackaging=jar -Dfile=d:\sitemesh-2.4.2.jar
