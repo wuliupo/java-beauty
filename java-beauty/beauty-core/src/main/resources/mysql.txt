@@ -1,0 +1,21 @@
+1、大多数的MySql服务器，都开启了缓存，这是提高性能的最有效的方法之一.
+	CurDATE()  NOW() 和 RAND() mysql都不会开启缓存. 
+2、Explain 查询语句.
+3、当只有1行数据时，使用limit 1.
+4、为搜索字段建立索引,
+	alter table userinfo add index adada(username);
+	CREATE INDEX index_name ON table_name (column_list);
+5、2个表中join的字段是被建过索引的.而且这些被用来join的字段应该是相同类型的.对哪些string类型的字段，还需要有相同的字符集.
+6、千万不要 orde by rand();
+7、避免select *,应该是需要什么就查询什么，避免返回不需要的数据.
+8、永远为每一张表设置一个主键ID，并且数据类型为INT型,（推荐为unsigned），并且设置为auto_increment.
+9、使用ENUM而不是varchar
+10、尽可能的使用not null.
+11、使用prepared statements，查下，前提是mysql版本支持缓存查下，还可以防止sql注入.
+12、把IP地址存成UNSIGNED INT类型.
+13、使用固定长度的表会更快，缺点是会浪费一些空间。
+14、垂直分割.被分割除去所形成的表你不会经常的join它，否则性能会比不分割时更差.
+15、拆分大的delete语句或insert 语句. 因为这2个操作会琐表，使用limit条件是一个好方法.
+16、越小的列会越快。
+17、选中正确的存储引擎. MyISAM InnoDB
+
