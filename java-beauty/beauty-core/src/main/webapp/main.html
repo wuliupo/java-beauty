@@ -44,7 +44,14 @@
 			if (this.href.substr(this.href.length-1) == "#") this.href = path +"#";
 		});
 
-		$("#tabs").tabs();
+		var tabs = $("#tabs").tabs();
+		
+		$( "#tabs span.ui-icon-close" ).live( "click", function() {
+            var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+            $( "#" + panelId ).remove();
+            tabs.tabs( "refresh" );
+        });
+		
 	});
 
 	var layoutSettings_Outer = {
@@ -112,25 +119,62 @@
 		}
 	};
 	
+	
+	 $(function() {
+	        $( "#accordion" ).accordion({
+	        	collapsible: true,
+	            heightStyle: "fill"
+	        });
+	  });
+	    $(function() {
+	        $( "#accordion-resizer" ).resizable({
+	            minHeight: 140,
+	            minWidth: 200,
+	            resize: function() {
+	                $( "#accordion" ).accordion( "refresh" );
+	            }
+	        });
+	    });
+	
 </script>
 
 </head>
 <body>
+   <style type="text/css">
+    #accordion-resizer {
+        padding: 10px;
+    }
+    </style>
 
 <div class="ui-layout-west">
 
 	<div class="header" id="navigation">主要菜单</div>
 
-	<div class="content">
-		<h3><b>Outer Layout</b></h3>
-		<ul>
-			<li><a href="#" onClick="outerLayout.toggle('north')">Toggle North</a></li>
-			<li><a href="#" onClick="outerLayout.toggle('south')">Toggle South</a></li>
-			<li><a href="#" onClick="outerLayout.toggle('west')"> Toggle West</a></li>
-		</ul>
+	<div id="accordion-resizer" class="content ui-widget-content">
+    <div id="accordion">
+        <h3>Section 1</h3>
+        <div>
+            <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
+        </div>
+        <h3>Section 2</h3>
+        <div>
+            <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
+        </div>
+        <h3>Section 3</h3>
+        <div>
+            <p>Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis. Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui. </p>
+            <ul>
+                <li>List item one</li>
+                <li>List item two</li>
+                <li>List item three</li>
+            </ul>
+        </div>
+        <h3>Section 4</h3>
+        <div>
+            <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+        </div>
+    </div>
 	</div>
-
-	<div class="footer">Automatically positioned footer</div>
 
 </div>
 
@@ -164,12 +208,16 @@
 	</div>
 </div>
 
+<style type="text/css">
+#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+    #add_tab { cursor: pointer; }
+</style>
 <div id="mainContent">
 	<div id="tabs">
 		<ul>
-        	<li><a href="#tabs-1">Nunc tincidunt</a></li>
-        	<li><a href="#tabs-2">Proin dolor</a></li>
-        	<li><a href="#tabs-3">Aenean lacinia</a></li>
+        	<li><a href="#tabs-1">Nunc tincidunt</a><span class="ui-icon ui-icon-close">Remove Tab</span></li>
+        	<li><a href="#tabs-2">Proin dolor</a><span class="ui-icon ui-icon-close">Remove Tab</span></li>
+        	<li><a href="#tabs-3">Aenean lacinia</a><span class="ui-icon ui-icon-close">Remove Tab</span></li>
     	</ul>
     	<div id="tabs-1">
         	<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
