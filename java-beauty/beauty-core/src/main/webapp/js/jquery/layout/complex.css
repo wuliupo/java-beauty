@@ -82,14 +82,11 @@ table {
 * Logo
 */
 #frameheader{
-	margin:0;padding:0;height:31px;line-height:31px;background:#1F4286
+	background:#1F4286
 }
 #frameheader .logo{
 		color:#E7E7E7;
-		heigth:31px;
-		line-height:31px;
 		position:relative;
-		left:5px;
 		padding-left:35px;
 		text-align:left;
 		width:280px;
