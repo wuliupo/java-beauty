@@ -34,6 +34,15 @@
 		<interceptors>
 			<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor" />
 			<interceptor-stack name="baseStack">
+				
+				 <interceptor-ref name="execAndWait"> 
+      				<param name="excludeMethods">input</param> 
+      				<!-- 等待时间,执行时间没有超过此值,将不显示等待画面 (毫秒) 
+      				<param name="delay">1000</param>--> 
+      				<!-- 间隔检查时间,检查后台进程有没有执行完毕,如果完成了它就立刻返回,不用等到等待,用户不会看到等待画面  
+      				<param name="delaySleepInterval">50</param>--> 
+      			</interceptor-ref> 
+				
 				<interceptor-ref name="exception" />
 				<interceptor-ref name="json" />
 				<interceptor-ref name="defaultStack" />
@@ -48,6 +57,7 @@
 				<param name="excludeNullProperties">true</param>
 			</result>
 			<result name="error">/error.jsp</result>
+			<result name="wait">/wait.jsp</result>
 		</global-results>
 		
 		<global-exception-mappings>
