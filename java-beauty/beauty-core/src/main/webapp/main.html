@@ -5,9 +5,9 @@
 	<meta name="language" content="en" />
 
 	<title>Java Beauty Framework</title>
-
 	<link rel="stylesheet" type="text/css" href="js/jquery/layout/complex.css" />
-	<link rel="stylesheet" type="text/css" href="js/jquery/ui/themes/smoothness/jquery-ui-1.9.1.custom.min.css" />
+	<link rel="stylesheet" type="text/css" href="js/jquery/ui/themes/redmond/jquery-ui-1.9.2.custom.min.css" />
+	
 	<!--[if lte IE 7]>
 		<style type="text/css"> body { font-size: 85%; } </style>
 	<![endif]-->
@@ -18,12 +18,77 @@
 
 <script type="text/javascript">
 	var outerLayout;
+	
+	var layoutSettings_Outer = {
+			name: "outerLayout" 
+		,
+		defaults: {
+				size:					"auto"
+			,	minSize:				30
+			,	paneClass:				"pane"
+			,	resizerClass:			"resizer"
+			,	togglerClass:			"toggler"
+			,	buttonClass:			"button"
+			,	contentSelector:		".content"
+			,	contentIgnoreSelector:	"span"
+			,	togglerLength_open:		35
+			,	togglerLength_closed:	35
+			,	hideTogglerOnSlide:		true
+			,	togglerTip_open:		"Close This Pane"
+			,	togglerTip_closed:		"Open This Pane"
+			,	resizerTip:				"Resize This Pane"
+			,	fxName:					"none"
+			,	fxSpeed_open:			0
+			,	fxSpeed_close:			0
+			,	fxSettings_open:		{ easing: "easeInQuint" }
+			,	fxSettings_close:		{ easing: "easeOutQuint" }
+		}
+		,	north: {
+				resizable: 				false
+			,	slidable:				false
+			}
+		,	south: {
+				resizable: 				false
+			,	slidable:				false
+			}
+		,	west: {
+				size:					250
+			,	spacing_closed:			21
+			,	togglerLength_closed:	21
+			,	togglerAlign_closed:	"top"
+			,	togglerLength_open:		0	
+			,	togglerTip_open:		"Close West Pane"
+			,	togglerTip_closed:		"Open West Pane"
+			,	resizerTip_open:		"Resize West Pane"
+			,	slideTrigger_open:		"click" 
+			,	initClosed:				false
+			,	fxSettings_open:		{ easing: "easeOutBounce" }
+			}
+		,	east: {
+				size:					250
+			,	spacing_closed:			21	
+			,	togglerLength_closed:	21	
+			,	togglerAlign_closed:	"top"	
+			,	togglerLength_open:		0 			
+			,	togglerTip_open:		"Close East Pane"
+			,	togglerTip_closed:		"Open East Pane"
+			,	resizerTip_open:		"Resize East Pane"
+			,	slideTrigger_open:		"click"
+			,	initClosed:				true
+			,	fxSettings:				{ easing: "" } 
+			}
+		,center: {
+				paneSelector:			"#mainContent" 			
+			,	minWidth:				200
+			,	minHeight:				200
+			}
+		};
+	
 	$(document).ready( function() {
 		outerLayout = $("body").layout( layoutSettings_Outer );
 
 		var westSelector = "body > .ui-layout-west";
 		var eastSelector = "body > .ui-layout-east";
-
 
 		$("<span></span>").addClass("pin-button").prependTo( westSelector );
 		$("<span></span>").addClass("pin-button").prependTo( eastSelector );
@@ -31,21 +96,19 @@
 		outerLayout.addPinBtn( westSelector +" .pin-button", "west");
 		outerLayout.addPinBtn( eastSelector +" .pin-button", "east" );
 
-
 		$("<span></span>").attr("id", "west-closer" ).prependTo( westSelector );
 		$("<span></span>").attr("id", "east-closer").prependTo( eastSelector );
 
 		outerLayout.addCloseBtn("#west-closer", "west");
 		outerLayout.addCloseBtn("#east-closer", "east");
 
-		$("a").each(function () {
-			var path = document.location.href;
-			if (path.substr(path.length-1)=="#") path = path.substr(0,path.length-1);
-			if (this.href.substr(this.href.length-1) == "#") this.href = path +"#";
-		});
-
-		var tabs = $("#tabs").tabs();
+		//左边菜单控制
+        $( "#menu_accordion" ).accordion({
+            heightStyle: "fill"
+        });
 		
+		//中间区域tabls控制
+		var tabs = $("#tabs").tabs();
 		$( "#tabs span.ui-icon-close" ).live( "click", function() {
             var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
             $( "#" + panelId ).remove();
@@ -54,104 +117,15 @@
 		
 	});
 
-	var layoutSettings_Outer = {
-		name: "outerLayout" 
-	,
-	defaults: {
-			size:					"auto"
-		,	minSize:				30
-		,	paneClass:				"pane"
-		,	resizerClass:			"resizer"
-		,	togglerClass:			"toggler"
-		,	buttonClass:			"button"
-		,	contentSelector:		".content"
-		,	contentIgnoreSelector:	"span"
-		,	togglerLength_open:		35
-		,	togglerLength_closed:	35
-		,	hideTogglerOnSlide:		true
-		,	togglerTip_open:		"Close This Pane"
-		,	togglerTip_closed:		"Open This Pane"
-		,	resizerTip:				"Resize This Pane"
-		,	fxName:					"none"
-		,	fxSpeed_open:			0
-		,	fxSpeed_close:			0
-		,	fxSettings_open:		{ easing: "easeInQuint" }
-		,	fxSettings_close:		{ easing: "easeOutQuint" }
-	}
-	,	north: {
-			resizable: 				false
-		,	slidable:				false
-		}
-	,	south: {
-			resizable: 				false
-		,	slidable:				false
-		}
-	,	west: {
-			size:					250
-		,	spacing_closed:			21
-		,	togglerLength_closed:	21
-		,	togglerAlign_closed:	"top"
-		,	togglerLength_open:		0	
-		,	togglerTip_open:		"Close West Pane"
-		,	togglerTip_closed:		"Open West Pane"
-		,	resizerTip_open:		"Resize West Pane"
-		,	slideTrigger_open:		"click" 
-		,	initClosed:				false
-		,	fxSettings_open:		{ easing: "easeOutBounce" }
-		}
-	,	east: {
-			size:					250
-		,	spacing_closed:			21	
-		,	togglerLength_closed:	21	
-		,	togglerAlign_closed:	"top"	
-		,	togglerLength_open:		0 			
-		,	togglerTip_open:		"Close East Pane"
-		,	togglerTip_closed:		"Open East Pane"
-		,	resizerTip_open:		"Resize East Pane"
-		,	slideTrigger_open:		"click"
-		,	initClosed:				true
-		,	fxSettings:				{ easing: "" } 
-		}
-	,center: {
-			paneSelector:			"#mainContent" 			
-		,	minWidth:				200
-		,	minHeight:				200
-		}
-	};
-	
-	
-	 $(function() {
-	        $( "#accordion" ).accordion({
-	        	collapsible: true,
-	            heightStyle: "fill"
-	        });
-	  });
-	    $(function() {
-	        $( "#accordion-resizer" ).resizable({
-	            minHeight: 140,
-	            minWidth: 200,
-	            resize: function() {
-	                $( "#accordion" ).accordion( "refresh" );
-	            }
-	        });
-	    });
-	
 </script>
 
 </head>
 <body>
-   <style type="text/css">
-    #accordion-resizer {
-        padding: 10px;
-    }
-    </style>
 
 <div class="ui-layout-west">
 
 	<div class="header" id="navigation">主要菜单</div>
-
-	<div id="accordion-resizer" class="content ui-widget-content">
-    <div id="accordion">
+    <div id="menu_accordion">
         <h3>Section 1</h3>
         <div>
             <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
@@ -174,7 +148,6 @@
             <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
         </div>
     </div>
-	</div>
 
 </div>
 
@@ -210,7 +183,6 @@
 
 <style type="text/css">
 #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
-    #add_tab { cursor: pointer; }
 </style>
 <div id="mainContent">
 	<div id="tabs">
