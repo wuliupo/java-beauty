@@ -1,0 +1,7 @@
+wdScrollTab   -->  http://www.web-delicious.com/jquery-plugins/
+
+MagicTabs -->
+
+Tabs jQuery Plugin -->
+
+KandyTabs -->
