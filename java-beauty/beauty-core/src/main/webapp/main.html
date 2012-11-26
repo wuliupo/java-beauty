@@ -20,10 +20,6 @@
 	<script type="text/javascript" src="js/jquery/wdScrollTab/src/Plugins/TabPanel.js"></script>
 	<script type="text/javascript" src="js/jquery/wdScrollTab/src/Plugins/Math.uuid.js"></script>
 	
-	<link href="js/jquery/tabs_1.3.2/css/default.css" rel="stylesheet" type="text/css"/>
-	<script type="text/javascript" src="js/jquery/tabs_1.3.2/core.js"></script>
-	<script type="text/javascript" src="js/jquery/tabs_1.3.2/tabs.js"></script>
-	
 <script type="text/javascript">
 var tabpanel;  
 var jcTabs = [
@@ -133,20 +129,6 @@ var jcTabs = [
             heightStyle: "fill"
         });
 		
-		//中间区域tabls控制
-		//var tabs = $("#tabs").tabs({heightStyle:"fill"});
-		
-		//$("#tabs").tabs('paging', { cycle: false, follow: false, followOnActive: true, activeOnAdd: true });
-		/*
-		$( "#tabs span.ui-icon-close" ).live( "click", function() {
-            var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-            //$( "#" + panelId ).remove();
-            $("#tabs").tabs('remove', panelId);
-            tabs.tabs( "refresh" );
-        });
-		*/
-		
-		/*
        tabpanel = new TabPanel({  
             renderTo:'tabs',
             //border:'none',  
@@ -169,62 +151,9 @@ var jcTabs = [
                 ,{id:'toolbarPlugin14',title:'Closable',html:jcTabs[13],closable: true}
             ]
         }); 
-		*/
 		
 	});
 
-</script>
-
-<script type="text/javascript">
-$(function(){
-	var dd = [], i=0;
-	for(i=0; i<10; i++){
-		var a = {
-			code: 'tab' + i,
-			title: 'Subject ' + i,
-			closeable: i>0,
-			el: 'Content of Tab' + i // You can put anything here
-		};
-		dd.push(a);
-	}
-	var tabs = $('.tabs');
-	tabs.mac('tabs', {
-		tabWidth: 80, //Use fix width
-		items: dd,
-		onCloseTab: function(me, c, a){
-			tnCbx.find('[value=' + c + ']').remove();
-			return true;
-		}
-	}).selectFirst();
-	var thd = tabs.children('.head'), thm = thd.children('.main');
-	thd.mousewheel(function(e, delta, deltaX, deltaY){
-		thm.scrollLeft(thm.scrollLeft() - deltaY * 40);
-		return false;
-	});
-	//extra control
-	var tnCbx = $('#tabNoCbx').change(function(){
-		tabs.select($(this).val());
-	});
-	App.options(tnCbx, {
-		data: dd,
-		keyField: 'code',
-		render: function(r){
-			return 'Select Tab #' + r.code;
-		}
-	});
-	var atBtn = $('#addTabBtn').click(function(){
-		var a = tabs.addTab({
-			code: 'tab' + i,
-			title: 'Subject ' + i,
-			closeable: i>0,
-			el: 'Content of Tab' + i // You can put anything here
-		});
-		tabs.select('tab' + i);
-		tnCbx.append('<option value="tab'
-			+ i + '">Select Tab #tab' + i + '</option>');
-		i++;
-	});
-});
 </script>
 
 </head>
