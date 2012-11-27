@@ -4,4 +4,6 @@ MagicTabs -->
 
 Tabs jQuery Plugin -->
 
+TabControl --> 
+
 KandyTabs -->
