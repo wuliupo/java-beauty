@@ -14,8 +14,8 @@ img { border:0;}
 
 body { margin:0; text-align:center; background:#FFF url(../default/images/login_bg.png) repeat-x top;}
 
-#login { background:#DBEAF9;display:block;width:950px;height:460px; margin-top:80px;margin-left:auto;margin-right:auto; font-size:12px;}
-#login_header { display:block; padding-top:10px; height:80px;}
+#login { background:#DBEAF9;display:block;width:950px;height:430px; margin-top:80px;margin-left:auto;margin-right:auto; font-size:12px;}
+#login_header { display:block; padding-top:10px; height:50px;}
 .navList { display:block; overflow:hidden; height:20px; padding-left:28px;}
 .navList ul { float:left; display:block; overflow:hidden;}
 .navList li { float:left; display:block; margin-left:-1px; padding:0 10px; background:url(../default/images/login_list.png) no-repeat 0 5px;}
